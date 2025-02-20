@@ -1,4 +1,3 @@
-import { Mail } from "lucide-react";
 import type { ComponentProps } from "react";
 
 interface InputRootProps extends ComponentProps<"div">{
