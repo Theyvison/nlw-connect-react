@@ -8,7 +8,7 @@ export default function Home() {
       <div className="min-h-dvh flex flex-col justify-center gap-16">
         <div className="flex flex-col gap-8 items-center md:items-start">
           <Image src={Logo} alt='Devstage' width={180.8} height={30} />
-          <h1 className='text-4xl text-center leading-none font-heading font-medium flex flex-col lg:text-7xl text-left'>
+          <h1 className='text-4xl text-center leading-none font-heading font-medium flex flex-col lg:text-7xl lg:text-left'>
             <span className='text-blue'>CodeCraft</span>
             Summit 2025
           </h1>
@@ -18,7 +18,7 @@ export default function Home() {
           <div className='flex-1 bg-gray-700 border border-gray-600 rounded-2xl p-8 space-y-6'>
             <div className='flex items-center justify-between'>
               <h2 className='font-heading font-semibold text-gray-200 text-xl'>Sobre o evento</h2>
-              <span className='text-purple font-semibold text-xs uppercase flex items-center flex gap-2'>
+              <span className='text-purple font-semibold text-xs uppercase flex items-center gap-2'>
                 <Radio className='size-5' />
                 ao vivo
               </span>
