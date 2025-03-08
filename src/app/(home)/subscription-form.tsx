@@ -8,6 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { subscribeToEvent } from "@/http/api";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const subscriptionSchema = z.object({
   name: z.string().min(2, "Digite seu nome completo!"),
@@ -16,9 +17,17 @@ const subscriptionSchema = z.object({
 type SubscriptionSchema = z.infer<typeof subscriptionSchema>;
 
 export function SubscriptionForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  
+  return (
+    <Suspense fallback={null}>
+      <SubscriptionFormContent />
+    </Suspense>
+  );
+}
+
+function SubscriptionFormContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const {
     register,
     handleSubmit,
@@ -28,11 +37,16 @@ export function SubscriptionForm() {
   });
 
   async function onSubscribe({ name, email }: SubscriptionSchema) {
-    const referrer = searchParams.get('referrer') 
+    try {
+      const referrer = searchParams.get("referrer");
 
-    const { subscriberId } = await subscribeToEvent({ name, email, referrer })
+      const { subscriberId } = await subscribeToEvent({ name, email, referrer });
 
-    router.push(`/invite/${subscriberId}`)
+      router.push(`/invite/${subscriberId}`);
+    } catch (error) {
+      console.error("Erro ao se inscrever:", error);
+      alert("Falha ao realizar a inscrição. Tente novamente.");
+    }
   }
 
   return (
@@ -57,25 +71,28 @@ export function SubscriptionForm() {
           </InputRoot>
 
           {errors?.name && (
-            <p className="text-danger text-xs font-semibold">{errors.name.message}</p>
+            <p className="text-red-500 text-xs font-semibold">
+              {errors.name.message}
+            </p>
           )}
         </div>
 
         <div className="space-y-2">
-          <InputRoot 
-          >
+          <InputRoot>
             <InputIcon>
               <Mail />
             </InputIcon>
             <InputField
-              type="mail"
+              type="email"
               placeholder="E-mail"
               {...register("email")}
             />
           </InputRoot>
 
           {errors?.email && (
-            <p className="text-danger text-xs font-semibold">{errors.email.message}</p>
+            <p className="text-red-500 text-xs font-semibold">
+              {errors.email.message}
+            </p>
           )}
         </div>
       </div>
